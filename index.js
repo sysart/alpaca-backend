@@ -50,7 +50,7 @@ app.post('/do-trade-if-it-is-reasonable/:symbol', async (req, res) => {
     });
   }
 
-  const percentage = Number(pos.unrealized_intraday_pl);
+  const percentage = Number(pos.unrealized_intraday_plpc);
 
   if (percentage < -0.1) {
     const orderQty = Number(pos.qty) * 2;
@@ -62,18 +62,22 @@ app.post('/do-trade-if-it-is-reasonable/:symbol', async (req, res) => {
       time_in_force: 'day',
     });
     res.json({
+      percentage,
       status: 'ordered',
       qty: orderQty,
     });
   } else if (percentage > 0.2) {
     await alpaca.closePosition(symbol);
     res.json({
+      percentage,
       status: 'closed',
     });
+  } else {
+    res.json({
+      percentage,
+      status: 'nothing',
+    });
   }
-  res.json({
-    status: 'nothing',
-  });
 });
 
 const port = process.env.PORT || 3001;
