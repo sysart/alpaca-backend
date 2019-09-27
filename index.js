@@ -5,14 +5,8 @@ const app = express();
 
 app.use(cors());
 
-app.get('/', (req, res) => {
-  res.json([
-    {
-      tradeId: 1,
-      buyer: 'Pekka',
-      wasAGoodTrade: true,
-    },
-  ]);
+app.get('/get-stocks', (req, res) => {
+  res.json([]);
 });
 
 const port = process.env.PORT || 3001;
