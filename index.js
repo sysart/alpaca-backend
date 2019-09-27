@@ -30,6 +30,11 @@ app.post('/orders', async (req, res) => {
 app.get('/position/:symbol', (req, res) => {
   alpaca.getPosition(req.params.symbol).then((pos) => {
     res.json(pos);
+  }).catch((err) => {
+    res.status(400).json({
+      status: 'error',
+      message: 'could not get position',
+    });
   });
 });
 
